@@ -1,0 +1,87 @@
+import controlP5.*;
+ControlP5 cp5;
+
+PFont didot;
+
+float rand1, rand2, rand3;
+
+boolean mandala = false;
+
+
+void setup() {
+  size (1000, 1000);
+  background(200, 200, 200);
+  didot = createFont("Didot", 14 );
+  textFont(didot);
+
+  cp5 = new ControlP5(this);
+
+  cp5.addButton("button1")
+    .setPosition(10, 20)
+    .setSize(170, 50)
+    .setFont(didot)
+    .setLabel("Draw mandala");
+
+  cp5.addButton("button2")
+    .setPosition(190, 20)
+    .setSize(170, 50)
+    .setFont(didot)
+    .setLabel("Clear");
+}
+void draw() {
+  text("PRESS 'S' TO STOP. PRESS 'C' TO CONTINUE", 20, 100);
+  if (mandala == true) {
+  
+    //create madala on a different "layer"
+    pushMatrix();
+    drawMandala();
+    popMatrix();
+  } else {
+  
+    //clear the screen
+    background(200, 200, 200);
+  }
+}
+
+void button1() {
+  mandala = true;
+  rand1 = random(500);
+  rand2 = random(500);
+  rand3 = random(500);
+  noFill();
+  strokeWeight(2);
+  stroke(rand1, rand2, rand3, 50);
+}
+
+void button2() {
+  mandala = false;
+}
+void keyPressed() {
+  if (key == 's') {
+    noLoop();
+  }
+  if (key == 'c') {
+    loop();
+  }
+}
+
+
+void drawMandala() {
+
+  //change current frame number to float
+  float time = (float)frameCount;
+
+  //move coordinates to the middle
+  translate(height/2, height/2);
+
+  //rotate the coordinates
+  rotate(time/rand1);
+
+
+  //draws two different shapes at the same time
+  ellipse(0, 0, sin(time/60)*rand2, cos(time/60)*rand2);
+  line(sin(time/7)*rand3, cos(time/7)*rand3, cos(time/30)*rand3, sin(time/30)*rand3);
+
+  //try this also!
+  //rect(sin(time/150)*rand2, cos(time/150)*rand2, atan(time/140)*rand3, cos(time/140)*rand3);
+}
